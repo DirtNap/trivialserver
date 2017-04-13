@@ -1,11 +1,43 @@
 """A class to produce FizzBuzz-like results."""
 import gmpy2
 
+_ENGINE_CACHE = {}
+
+def fizz_factory(max_size=64):
+    """Create and cache a FizzEngine.
+
+    Arguments:
+      max_size:  As per FizzEngine(max_size)
+
+    Returns:
+      A configured FizzEngine.  For any given max_size, only one FizzEngine
+      will be created.
+    """
+
+    if not max_size in _ENGINE_CACHE:
+        _ENGINE_CACHE[max_size] = FizzEngine(max_size)
+    return _ENGINE_CACHE[max_size]
+
+
 class FizzEngine(object):
+    """Manages Fizz Buzz transformations of any length up to a certain depth."""
 
     def __init__(self, max_size=64):
+        """Create a FizzEngine.
+
+        Arguments:
+          max_size:  Integer representing the maximum number of primes which can
+          be replaced by terms in calls to get_fizz.  Does not impact the size
+          of the returned list.
+
+        Returns:
+          A configured FizzEngine.
+        Raises:
+          ValueError:  When max_size is less than one.
+        """
+
         if max_size < 1:
-            raise AttributeError("max_size can not be negative.")
+            raise ValueError("max_size can not be negative.")
 
         self.max_size = max_size
         current = 3
@@ -37,7 +69,7 @@ class FizzEngine(object):
                        FizzEngine.max_size.
         """
 
-         if len(words) > self.max_size:
+        if len(words) > self.max_size:
             raise ValueError("Replacement of %d terms exceeds maximum of %d." % (
                 len(words), self.max_size))
 
