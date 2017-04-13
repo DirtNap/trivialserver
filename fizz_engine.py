@@ -79,6 +79,8 @@ class FizzEngine(object):
             match = []
             if i > 2:
                 for (w, p) in terms:
+                    if p > i:
+                        break
                     if i % p == 0:
                         match.append(w)
             if match:
